@@ -1,0 +1,105 @@
+---
+- name: Setup Server
+  hosts: server
+  tasks:
+      - name: Run apt-get update
+        apt:
+           update_cache: yes
+        become: yes
+      - name: Install usefull things
+        block:
+          - name: Install net-tools
+            apt:
+               name: net-tools
+               state: present
+               force_apt_get: yes
+            become: yes
+          - name: Install vim
+            apt:
+               name: vim
+               state: present
+               force_apt_get: yes
+            become: yes
+      - name: Install prerequisites for Docker
+        block:
+          - name: Install ca-certificates 
+            apt:
+                name: ca-certificates
+                state: present
+                force_apt_get: yes 
+            become: yes
+          - name: Install curl
+            apt:
+                name: curl
+                state: present
+                force_apt_get: yes
+            become: yes
+          - name: Install gnupg
+            apt:
+                name: gnupg
+                state: present
+                force_apt_get: yes
+            become: yes
+          - name: Install lsb-release
+            apt:
+                name: lsb-release
+                state: present
+                force_apt_get: yes
+            become: yes
+      - name: Add Dockers official GPG key
+        block:
+          - name: Create keyrings dir
+            file:
+                 path: /etc/apt/keyrings
+                 state: directory
+          - name: List all files in /etc/apt/keyrings
+            ansible.builtin.command: ls /etc/apt/keyrings
+            register: contents
+          - name: Write Dockers GPG key to .../keyrings/docker.gpg
+            shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg'
+            when: contents.stdout.find('docker.gpg') == -1
+            become: yes   
+      - name: Set up the repository
+        shell: 'echo \
+              "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu 
+                 $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null'
+        become: yes
+      - name: Install docker engine 
+        block:
+           - name: Run apt-get
+             apt:
+                update_cache: yes
+             become: yes 
+           - name: Install docker-ce   
+             apt:
+                name: docker-ce 
+                state: present 
+                force_apt_get: yes  
+             become: yes   
+           - name: Install docker-ce-cli   
+             apt:                           
+                name: docker-ce-cli    
+                state: present     
+                force_apt_get: yes    
+             become: yes     
+           - name: Install containerd.io     
+             apt:  
+                name: containerd.io    
+                state: present   
+                force_apt_get: yes    
+             become: yes      
+           - name: Install docker-compose-plugin        
+             apt:    
+                name: docker-compose-plugin     
+                state: present    
+                force_apt_get: yes     
+             become: yes
+           - name: Run docker run hello-world
+             shell: 'sudo docker run hello-world'
+             become: yes
+      - name: Install docker-compose
+        apt:
+            name: docker-compose
+            state: present
+            force_apt_get: yes
+        become: yes
