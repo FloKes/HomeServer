@@ -1,0 +1,41 @@
+---
+- name: Setup Jellyfin
+  hosts: server
+  tasks:
+      - name: Pull jellyfin image
+        community.docker.docker_image:
+           name: jellyfin/jellyfin
+           state: present
+           source: pull
+        become: yes
+      - name: Create jellyfin, config and cache directories
+        block:
+          - name: Create jellyfin dir
+            file:
+               path: ~/jellyfin
+               state: directory
+          - name: Create config dir
+            file:
+               path: ~/jellyfin/config
+               state: directory
+          - name: Create cache dir
+            file:
+               path: ~/jellyfin/cache
+               state: directory
+      - name: Copy docker-compose file to server
+        ansible.builtin.copy:
+              src: /etc/ansible/files/docker-compose.yaml
+              dest: ~/jellyfin/docker-compose.yaml
+              backup: yes
+      - name: Deploy docker compose images
+        block:
+          - name: Tear down existing services
+            community.docker.docker_compose:
+              project_src: ~/jellyfin
+              state: absent
+          - name: Create and start services
+            community.docker.docker_compose:
+               project_src: ~/jellyfin
+            register: output
+          - ansible.builtin.debug:
+               var: output
