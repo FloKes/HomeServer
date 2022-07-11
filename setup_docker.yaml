@@ -60,6 +60,7 @@
             when: contents.stdout.find('docker.gpg') == -1
             become: yes   
       - name: Set up the repository
+        # On the docker guide, a backslash is included before $(lsb_release -cs), but this causes problems with ansible as a backslash is written to the docker.list file. Omitting it here solves the problem 
         shell: 'echo \
               "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu 
                  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null'
