@@ -20,9 +20,6 @@
 [server]
 192.168.1.4 ansible_ssh_pass=ljubav ansible_ssh_user=floma
 
-[server:vars]
-ansible_user = root
-ansible_password = ljubav
 
 # If you have multiple hosts following a pattern, you can specify
 # them like this:
