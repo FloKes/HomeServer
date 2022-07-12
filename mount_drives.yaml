@@ -22,7 +22,19 @@
             shell: 'echo "UUID=2cc00b65-9d64-4b9a-8aba-d737903734f8 /media/Media1               ext4   defaults 2 2" | sudo tee -a /etc/fstab > /dev/null'
             when: fstab_contents.stdout.find('2cc00b65-9d64-4b9a-8aba-d737903734f8') == -1
             become: yes
+          - name: Get ownership stats of Media1
+            ansible.builtin.stat:
+              path: /media/Media1
+            register: st
+          - name: Change ownership of path to 'floma'
+            ansible.builtin.file:
+              path: /media/Media1
+              owner: floma
+              group: floma
+            when: st.stat.pw_name != 'floma'
+      # Stuff can safely be added after this as ansible handles
+      # waiting for machine to reboot
       # - name: Reboot machine to mount the drives
       #   ansible.builtin.reboot:
-      #   reboot_timeout: 10
+      #   reboot_timeout: 3
       #   become: yes
