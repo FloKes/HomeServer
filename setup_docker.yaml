@@ -98,6 +98,7 @@
            - name: Run docker run hello-world
              shell: 'sudo docker run hello-world'
              become: yes
+      # Docker-compose is deprecated, so this might not work in the future
       - name: Install docker-compose
         apt:
             name: docker-compose
