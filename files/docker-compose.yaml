@@ -9,4 +9,5 @@ services:
       - /home/floma/jellyfin/config:/config
       - /home/floma/jellyfin/cache:/cache
       - /media/Media1:/media1
+      - /media/Media2:/media2   
     restart: "unless-stopped"

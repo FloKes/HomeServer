@@ -24,6 +24,26 @@
                 shell: 'echo "UUID=2cc00b65-9d64-4b9a-8aba-d737903734f8 /media/Media1               ext4   defaults 2 2" | sudo tee -a /etc/fstab > /dev/null'
                 when: fstab_contents.stdout.find('2cc00b65-9d64-4b9a-8aba-d737903734f8') == -1
                 become: yes
+          - name: Mount Media2 drive        
+            block:
+              - name: Create the /media/Media2 directory
+                file:
+                     path: /media/Media2
+                     state: directory
+                become: yes
+              - name: Write content of fstab to variable
+                ansible.builtin.command: cat /etc/fstab
+                register: fstab_contents
+              - name: Write comment for fstab for Media2
+                shell: 'echo "# Media2 Hard drive" | sudo tee -a /etc/fstab > /dev/null'
+                when: fstab_contents.stdout.find('# Media2 Hard drive') == -1
+                become: yes
+              - name: Write mount details to fstab for Media2
+                # tee prints the text to stdout, too. 
+                # In order to mute it so it behaves more similar to shell appending (>>), route the stdout to /dev/null:
+                shell: 'echo "UUID=48ecc200-4d29-47ca-8983-b375e34ad82e /media/Media2               ext4   defaults 2 2" | sudo tee -a /etc/fstab > /dev/null'
+                when: fstab_contents.stdout.find('48ecc200-4d29-47ca-8983-b375e34ad82e') == -1
+                become: yes
       # Stuff can safely be added after this as ansible handles
       # waiting for machine to reboot
       - name: Reboot machine to mount the drives
@@ -41,6 +61,19 @@
               - name: Change ownership of path to 'floma'
                 ansible.builtin.file:
                   path: /media/Media1
+                  owner: floma
+                  group: floma
+                when: st.stat.pw_name != 'floma'
+                become: yes
+          - name: Media2
+            block:
+              - name: Get ownership stats of Media2
+                ansible.builtin.stat:
+                  path: /media/Media2
+                register: st
+              - name: Change ownership of path to 'floma'
+                ansible.builtin.file:
+                  path: /media/Media2
                   owner: floma
                   group: floma
                 when: st.stat.pw_name != 'floma'
