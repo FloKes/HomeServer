@@ -12,31 +12,31 @@
         block:
           - name: Create jellyfin dir
             file:
-               path: ~/jellyfin
+               path: /home/floma/jellyfin
                state: directory
           - name: Create config dir
             file:
-               path: ~/jellyfin/config
+               path: /home/floma/jellyfin/config
                state: directory
           - name: Create cache dir
             file:
-               path: ~/jellyfin/cache
+               path: /home/floma/jellyfin/cache
                state: directory
       - name: Copy docker-compose file to server
         ansible.builtin.copy:
               src: /etc/ansible/files/docker-compose.yaml
-              dest: ~/jellyfin/docker-compose.yaml
+              dest: /home/floma/jellyfin/docker-compose.yaml
               backup: yes
       - name: Deploy docker compose images
         block:
           - name: Tear down existing services
             community.docker.docker_compose:
-              project_src: ~/jellyfin
+              project_src: /home/floma/jellyfin
               state: absent
             become: yes
           - name: Create and start services
             community.docker.docker_compose:
-               project_src: ~/jellyfin
+               project_src: /home/floma/jellyfin
             become: yes
             register: output
           - ansible.builtin.debug:
