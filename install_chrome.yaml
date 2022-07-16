@@ -1,5 +1,5 @@
 ---
-- name: Setup Server Chrome
+- name: Setup Chrome on Server
   hosts: server
   tasks:
      - name: Download and Install Chrome

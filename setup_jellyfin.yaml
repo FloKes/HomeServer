@@ -33,9 +33,11 @@
             community.docker.docker_compose:
               project_src: ~/jellyfin
               state: absent
+            become: yes
           - name: Create and start services
             community.docker.docker_compose:
                project_src: ~/jellyfin
+            become: yes
             register: output
           - ansible.builtin.debug:
                var: output

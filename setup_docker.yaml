@@ -1,5 +1,5 @@
 ---
-- name: Setup Server
+- name: Setup Docker
   hosts: server
   tasks:
       - name: Run apt-get update
@@ -59,6 +59,7 @@
             shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg'
             when: contents.stdout.find('docker.gpg') == -1
             become: yes   
+      #TODO: check if file exists and skip if does - maybe not tho, tee is maybe ok, check out
       - name: Set up the repository
         # On the docker guide, a backslash is included before $(lsb_release -cs), but this causes problems with ansible as a backslash is written to the docker.list file. Omitting it here solves the problem 
         shell: 'echo \
