@@ -2,8 +2,12 @@
 - name: Setup qBit
   hosts: server
   tasks:
-      - name: Copy Qbit file to server
-        ansible.builtin.copy:
+    - name: Create qBitTorrent directory
+      file:
+          path: /home/floma/qBitTorrent
+          state: directory 
+    - name: Copy Qbit file to server
+      ansible.builtin.copy:
           src: /etc/ansible/files/qbittorrent-4.4.3.1_x86_64.AppImage
           dest: /home/floma/qBitTorrent/qbittorrent-4.4.3.1_x86_64.AppImage
           backup: yes
