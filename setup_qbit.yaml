@@ -2,6 +2,10 @@
 - name: Setup qBit
   hosts: server
   tasks:
+    - name: Install libfuse2
+      apt:
+        name: libfuse2
+        state: present
     - name: Create qBitTorrent directory
       file:
           path: /home/floma/qBitTorrent
