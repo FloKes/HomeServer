@@ -11,3 +11,4 @@
           src: /etc/ansible/files/qbittorrent-4.4.3.1_x86_64.AppImage
           dest: /home/floma/qBitTorrent/qbittorrent-4.4.3.1_x86_64.AppImage
           backup: yes
+          mode: u=rwx,g=rwx,o=rwx
