@@ -18,7 +18,8 @@
 # Ex 2: A collection of hosts belonging to the 'webservers' group:
 
 [server]
-192.168.1.4 ansible_ssh_pass=ljubav ansible_ssh_user=floma
+# 192.168.1.4 ansible_ssh_pass=ljubav ansible_ssh_user=floma
+100.81.254.93 ansible_ssh_pass=1914 ansible_ssh_user=floma
 
 
 # If you have multiple hosts following a pattern, you can specify
