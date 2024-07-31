@@ -14,7 +14,7 @@ ansible-playbook setup_jellyfin.yaml --ask-become-pass
 ```
 
 The ansible playbooks on the control node should be located in : ```/etc/ansible/```, because of the ***src*** directory for copying the ***docker-compose.yaml*** file. 
-When cloning, clone into this folder. If the folder doesn't exist, create it in ```/etc/```
+When cloning, clone into this folder. If the folder doesn't exist, create it in ```/etc/``` or in the home directory.
 
 On the home server, if you use another username instead of ***floma*** , change the paths in the ***docker-compose.yaml*** file  
 
