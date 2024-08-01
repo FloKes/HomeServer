@@ -20,6 +20,12 @@
                state: present
                force_apt_get: yes
             become: yes
+          - name: Install ncdu
+            apt:
+               name: ncdu
+               state: present
+               force_apt_get: yes
+            become: yes
       - name: Install prerequisites for Docker
         block:
           - name: Install ca-certificates 
