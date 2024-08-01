@@ -19,5 +19,21 @@ When cloning, clone into this folder. If the folder doesn't exist, create it in 
 On the home server, if you use another username instead of ***floma*** , change the paths in the ***docker-compose.yaml*** file  
 
 
-##In case of new hard drives
+# In case of new hard drives
 You can find the ***UUIDs*** of the hard drives by running ```sudo blkid```, and writing the ***UUIDs*** to the ***mount_drives.yaml*** playbook
+
+
+# To disable ratings in Jellyfin 10.9.6
+
+Go to Dashboard → General Settings → Custom CSS and paste:
+```
+.starRatingContainer.mediaInfoItem,
+
+.mediaInfoCriticRating.mediaInfoCriticRatingFresh,
+
+.mediaInfoCriticRating.mediaInfoCriticRatingRotten {
+
+     display: none;
+
+}
+```
