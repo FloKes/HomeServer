@@ -21,7 +21,8 @@ On the home server, if you use another username instead of ***floma*** , change 
 
 
 # In case of new hard drives
-You can find the ***UUIDs*** of the hard drives by running ```sudo blkid```, and writing the ***UUIDs*** to the ***mount_drives.yaml*** playbook
+You can find the ***UUIDs*** of the hard drives by running ```sudo blkid```, and writing the ***UUIDs*** to the ***mount_drives.yaml*** playbook.
+
 If using MergerFS, mount the new hard drive to ***/media/Media<number>*** in the ***mount_drives.yaml*** playbook
 
 
