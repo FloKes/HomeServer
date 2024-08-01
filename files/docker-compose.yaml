@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   jellyfin:
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:10.9.6
     container_name: jellyfin
     user: 1000:1000
     network_mode: "host"
@@ -10,5 +10,6 @@ services:
       - /home/floma/jellyfin/cache:/cache
       - /media/Media1:/media1
       - /media/Media2:/media2   
-      - /media/Media3:/media3   
+      - /media/Media3:/media3
+      - /media/storage:/Media   
     restart: "unless-stopped"

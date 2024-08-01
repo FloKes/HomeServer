@@ -64,6 +64,26 @@
                 shell: 'echo "UUID=38bcb568-9cad-45a1-86e5-6e89972da698 /media/Media3               ext4   defaults 2 2" | sudo tee -a /etc/fstab > /dev/null'
                 when: fstab_contents.stdout.find('38bcb568-9cad-45a1-86e5-6e89972da698') == -1
                 become: yes
+          - name: Mount MergerFS volume        
+            block:
+              - name: Create the /media/storage directory
+                file:
+                     path: /media/storage
+                     state: directory
+                become: yes
+              - name: Write content of fstab to variable
+                ansible.builtin.command: cat /etc/fstab
+                register: fstab_contents
+              - name: Write comment for fstab for MergerFS volume
+                shell: 'echo "# MergerFS volume" | sudo tee -a /etc/fstab > /dev/null'
+                when: fstab_contents.stdout.find('# MergerFS volume') == -1
+                become: yes
+              - name: Write mount details to fstab for MergerFS volume
+                # tee prints the text to stdout, too. 
+                # In order to mute it so it behaves more similar to shell appending (>>), route the stdout to /dev/null:
+                shell: 'echo "/media/Media* /media/storage mergerfs cache.files=partial,dropcacheonclose=true,allow_other,category.create=mfs 0 0" | sudo tee -a /etc/fstab > /dev/null'
+                when: fstab_contents.stdout.find('/media/Media* /media/storage') == -1
+                become: yes
       # Stuff can safely be added after this as ansible handles
       # waiting for machine to reboot
       - name: Reboot machine to mount the drives
