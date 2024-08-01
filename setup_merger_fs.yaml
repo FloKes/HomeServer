@@ -7,7 +7,8 @@
           - name: Get MergerFS image
             shell: 'wget https://github.com/trapexit/mergerfs/releases/download/2.40.2/mergerfs_2.40.2.ubuntu-jammy_amd64.deb'
             # when: contents.stdout.find('docker.gpg') == -1 
-      - name: Install MergerFS with dpkg
-        shell: 'dpkg -i mergerfs_2.40.2.ubuntu-jammy_amd64.deb'
+      - name: Install MergerFS with apt
+        apt:
+          deb: 'mergerfs_2.40.2.ubuntu-jammy_amd64.deb'
         become: yes
 
